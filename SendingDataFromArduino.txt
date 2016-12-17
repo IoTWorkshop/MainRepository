@@ -26,6 +26,8 @@ void loop() {
     delay(400);
     
 }
+
+//sending pressure
 void sendData1(){
   
     
@@ -43,6 +45,37 @@ void sendData1(){
 //    Wire.write(voltage);
     
 }
+
+//Sending Temperature
+void sendData2(){
+  char  TempToSend[20];
+    ftoa(bme.readTemperature(), TempToSend,4);
+    Wire.write(TempToSend);
+    Serial.println(TempToSend);
+    Wire.onRequest(sendData4);
+   
+    }
+
+
+    //sending altitude
+void sendData3(){
+  char AltToSend[20];
+    ftoa(bme.readAltitude(1013.25), AltToSend,4);
+    Wire.write(AltToSend);
+    Serial.println(AltToSend);
+    Wire.onRequest(sendData4); 
+    
+  }
+
+  //voltage
+void sendData4(){
+  float voltage;
+    voltage = getVoltage(gasSensor);
+  char PolToSend[20];
+    ftoa(voltage, PolToSend,4);
+    Wire.write(PolToSend);
+    Serial.println(PolToSend);
+  }
 void reverse(char *str, int len)
 {
     int i=0, j=len-1, temp;
